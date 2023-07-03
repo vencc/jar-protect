@@ -3,31 +3,15 @@ package com.free.bsf.jarprotect.tool;
 
 import com.free.bsf.jarprotect.core.base.BsfException;
 import com.free.bsf.jarprotect.core.base.Context;
-import com.free.bsf.jarprotect.core.encrypt.EncryptTime;
-import com.free.bsf.jarprotect.core.encrypt.IEncrypt;
-import com.free.bsf.jarprotect.core.util.*;
-import javassist.CtClass;
-import javassist.CtMethod;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Date;
 
 public class Test {
     public static void main(String[] args) throws IOException {
         Context.Default=new Context(null);
         try {
-            Object encrypt = DynamicCompiler.Default.getClassBytes("com.free.bsf.jarprotect.core.encrypt.MyEncrypt", FileUtils.readAllText("c:\\tools\\加密.java"));
-            CtClass ctClass = Context.Default.Pool.get(encrypt.getClass().getName());
-            byte[] ds = ctClass.toBytecode();
-            ctClass.detach();
-            byte[] ds2 = new EncryptTime().d(new EncryptTime().e(ds));//CommonUtils.decryptCode(CommonUtils.encryptCode(ds));
-            CtClass cls =CommonUtils.loadClass(Context.Default.Pool,ds2);
-            for(CtMethod m:cls.getMethods()){
-               System.out.println(m.getName());
-            }
+           // String a = new String(new MyEncrypt().d( new MyEncrypt().e("aa中国aa".getBytes())));
+           // System.out.println(a);
         }catch (Exception e){
             throw new BsfException(e);
         }

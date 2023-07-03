@@ -55,7 +55,7 @@ public class MyEncrypt implements IEncrypt {
     public byte[] d(byte[] d) {
         try {
             //Context.Default.getPassword()
-            /*加密逻辑代码*/
+            /*解密逻辑代码*/
         }catch (Exception e){
             throw new BsfException(e);
         }

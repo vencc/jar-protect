@@ -10,6 +10,8 @@ java 本身是开放性极强的语言,代码也容易被反编译,没有语言�
 2. 目前支持springboot打包的jar文件（其他未测）
 3. 目前仅支持class文件加密
 
+### 加密设计
+![加密](/doc/encode.jpg)
 ### 加密命令
 jdk17 需要加--add-opens java.base/java.lang=ALL-UNNAMED
 ``` 
@@ -61,6 +63,9 @@ public class MyEncrypt implements IEncrypt {
 }
 ```
 自定义编码案例[Base64+DES](/doc/base64_DES.md)
+
+### 解密命令
+![解密](/doc/decode.jpg)
 
 ### 解密命令
 jdk17 需要加--add-opens java.base/java.lang=ALL-UNNAMED

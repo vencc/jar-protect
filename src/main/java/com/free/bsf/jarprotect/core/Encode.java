@@ -72,7 +72,8 @@ public class Encode {
 
     public static void clearMethod(ClassPool pool, JarFileInfo file) {
         try {
-            String msg = "System.out.println(\"文件已加密处理!\");";
+            String msg = "System.out.println(\"文件已加密处理!\");System.out.println(\"${myVersionInfo}\");";
+            msg = msg.replace("${myVersionInfo}",Context.Default.getMyVersionInfo());
             CtClass ctClass = pool.getOrNull(file.getClassName());
             if (ctClass == null) {
                 LogUtils.error("无法清除类方法:" + file.getFileName());

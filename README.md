@@ -20,10 +20,12 @@ java -jar jar-project.jar --fromJar "c:\\tool\\a.jar"
 ``` 
 #过期时间,为空则不限制过期时间(默认到9999-01-01)
 expireTime=2023-07-01
-#加密密码,为空则自动生成密码
+#加密密码,为空则随机生成动态密码
 password=
 #加密解密文件地址(加密java代码源码),为空则使用自带des加密
 myEncryptCodeFile=加密.java
+#加密方写入的版权信息声明,为空则无
+myVersionInfo=请正规渠道获得版本授权文件,严禁进行反编译修改或破解,一经发现会追溯法律责任！
 ```
 加密.java模板
 ```
@@ -68,6 +70,7 @@ java -javaagent:encrypt-lmc-demo-provider-1.0-SNAPSHOT.jar -jar encrypt-lmc-demo
 ```
 #加密密码
 password=
+#解密秘钥代码
 myDecryptCode=
 ```
 

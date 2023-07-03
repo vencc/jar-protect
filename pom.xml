@@ -41,7 +41,6 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>com.free.bsf.jarprotect.tool.Main</Main-Class>
-<!--                                        <Premain-Class>net.roseboy.classfinal.Agent</Premain-Class>-->
                                     </manifestEntries>
                                 </transformer>
                             </transformers>

@@ -92,6 +92,10 @@ public class Context {
         return get("debug","false").toString();
     }
 
+    public String getMyVersionInfo(){
+        return get("myVersionInfo","").toString();
+    }
+
     private Object get(String key,Object defaultValue){
         return this.property.get(key)==null?defaultValue:this.property.get(key);
     }

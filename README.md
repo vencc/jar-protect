@@ -1,37 +1,78 @@
 # jar-project
 
-#### 介绍
-java的jar加密加壳工具,对class文件进行加密防护,避免反编译破解,从而保护软件版权。
+## 介绍
+java 本身是开放性极强的语言,代码也容易被反编译,没有语言层面的一些常规保护机制,jar包很容易被反编译和破解。
+受classfinal（已停止维护）设计启发,针对springboot日常项目开发,重新编写安全可靠的jar包加壳加密技术,用于保护软件版权。
 
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+### 使用说明
+1. 使用jdk8编译,支持jdk8+版本
+2. 目前仅支持springboot打包的jar文件
+3. 目前仅支持class文件加密
 
 
-#### 特技
+### 加密命令
+jdk17 需要加--add-opens java.base/java.lang=ALL-UNNAMED
+``` 
+java -jar jar-project.jar --fromJar "c:\\tool\\a.jar"
+``` 
+### 加密配置
+文件名: jar-project.security.properties
+``` 
+#过期时间,为空则不限制过期时间(默认到9999-01-01)
+expireTime=2023-07-01
+#加密密码,为空则自动生成密码
+password=
+#加密解密文件地址(加密java代码源码),为空则使用自带des加密
+myEncryptCodeFile=加密.java
+```
+加密.java模板
+```
+package com.free.bsf.jarprotect.core.encrypt;
+import com.free.bsf.jarprotect.core.base.BsfException;
+import com.free.bsf.jarprotect.core.base.Context;
+import com.free.bsf.jarprotect.core.encrypt.IEncrypt;
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+/*MyEncrypt类名不能更改,注意引用相应的包(仅支持jdk自身的类库,不能使用第三方类库)*/
+public class MyEncrypt implements IEncrypt {
+    @Override
+    public byte[] e(byte[] d) {
+        try {
+           //Context.Default.getPassword()
+           /*加密逻辑代码*/
+        }catch (Exception e){
+            throw new BsfException(e);
+        }
+    }
+
+    @Override
+    public byte[] d(byte[] d) {
+        try {
+            //Context.Default.getPassword()
+            /*加密逻辑代码*/
+        }catch (Exception e){
+            throw new BsfException(e);
+        }
+    }
+}
+```
+自定义编码案例[Base64+DES](/doc/base64_DES.md)
+
+### 解密命令
+jdk17 需要加--add-opens java.base/java.lang=ALL-UNNAMED
+``` 
+java -javaagent:encrypt-lmc-demo-provider-1.0-SNAPSHOT.jar -jar encrypt-lmc-demo-provider-1.0-SNAPSHOT.jar
+``` 
+
+### 解密配置
+一般为加密jar包后自动生成,文件名为{jar包名}.security.properties,解密jar需要配套此解密配置文件
+```
+#加密密码
+password=
+myDecryptCode=
+```
+
+### 未来扩展
+1. 增加配置文件等资源加密
+2. 增加远程授权管理端
+
+##### by 车江毅

@@ -87,4 +87,4 @@ myDecryptCode=
 1. 增加配置文件等资源加密
 2. 增加远程授权管理端
 
-##### [车江毅](https://gitee.com/chejiangyi)
+##### by [车江毅](https://gitee.com/chejiangyi)

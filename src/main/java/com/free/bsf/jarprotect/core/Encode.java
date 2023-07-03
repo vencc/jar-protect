@@ -28,6 +28,11 @@ public class Encode {
         CommonUtils.loadClassPath(pool, files);
         for (JarFileInfo file : files) {
             if (file.getFileName().endsWith(".class")) {
+                String fileNameNoExt = FileUtils.getFileNameWithoutSuffix(file.getFileName());
+                if (StringUtils.hitCondition(excludeClassCondition, fileNameNoExt)) {
+                    LogUtils.info("跳过类:"+file.getClassName());
+                    continue;
+                }
                 String newFile = CommonUtils.getClassEncodePath(targetDir, file.getClassName());
                 FileUtils.deleteFile(newFile);
                 FileUtils.createDirectory(newFile);

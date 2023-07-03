@@ -62,8 +62,8 @@ public class MyEncrypt implements IEncrypt {
     }
 }
 ```
-自定义编码案例[Base64+DES](/doc/base64_DES.md)
-自定义编码案例[RSA](/doc/RSA.md)
+* 自定义编码案例[Base64+DES](/doc/base64_DES.md)
+* 自定义编码案例[RSA](/doc/RSA.md)
 
 ### 解密设计
 ![解密](/doc/decode.jpg)

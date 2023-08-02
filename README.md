@@ -8,7 +8,7 @@ java 本身是开放性极强的语言,代码也容易被反编译,没有语言�
 ### 使用说明
 1. 使用jdk8编译,支持jdk8+版本
 2. 目前支持springboot打包的jar文件（其他未测）
-3. 目前仅支持class文件加密
+3. 目前支持class文件加密和yml,properties,xml等配置文件加密
 
 ### 加密设计
 ![加密](/doc/encode.jpg)

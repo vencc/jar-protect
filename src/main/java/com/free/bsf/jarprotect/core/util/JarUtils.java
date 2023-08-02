@@ -11,7 +11,7 @@ import java.util.zip.*;
 
 public class JarUtils {
     public static String JARUNJARTAG="---UNJAR---";
-    public static List<JarFileInfo> unJar(String jarPath, String targetDir,String includeLibJarsCondition) {
+    public static List<JarFileInfo> unJar(int level,String jarPath, String targetDir,String includeLibJarsCondition) {
         if(targetDir==null)
         {
             targetDir=CommonUtils.gtJarUnJarPath(jarPath);
@@ -35,7 +35,7 @@ public class JarUtils {
                     try (InputStream input = zipFile.getInputStream(entry)) {
                         byte[] bytes = FileUtils.toBytes(input);
                         FileUtils.saveStream(bytes, targetFile.getAbsolutePath());
-                        JarFileInfo info = new JarFileInfo(targetFile.getAbsolutePath(),jarPath);
+                        JarFileInfo info = new JarFileInfo(level,targetFile.getAbsolutePath(),jarPath);
                         list.add(info);
                     }
                 }
@@ -49,7 +49,7 @@ public class JarUtils {
             String fileNameNoExt = FileUtils.getFileNameWithoutSuffix(jar.getFileName());
             if (StringUtils.hitCondition(includeLibJarsCondition, fileNameNoExt)) {
                 //String jarDir = new File(parentDir, jar.getFileName()+JARUNJARTAG).getAbsolutePath();
-                List<JarFileInfo> temp = unJar(jar.FilePath, null, null);
+                List<JarFileInfo> temp = unJar(level+1,jar.FilePath, null, null);
                 list.addAll(temp);
                 list.remove(jar);
                 FileUtils.deleteFile(jar.FilePath);

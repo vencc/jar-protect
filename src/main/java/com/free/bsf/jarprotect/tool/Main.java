@@ -19,6 +19,6 @@ public class Main {
         }
         String to= new File(from.getParent(), "encrypt-"+FileUtils.getFileName(from.getAbsolutePath())).getAbsolutePath();
         LogUtils.info("加密后jar:"+to);
-       new Encode().run(from.getAbsolutePath(),to,params.get("excludeClass"),params.get("includeJar"));
+       new Encode().run(from.getAbsolutePath(),to,params.get("excludeClass"),params.get("includeJar"),params.get("includeConfig"));
     }
 }

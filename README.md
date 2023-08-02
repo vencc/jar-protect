@@ -18,7 +18,8 @@ jdk17 需要加--add-opens java.base/java.lang=ALL-UNNAMED
 #fromJar 待加密的jar包的地址,支持相对路径
 #excludeClass 排除(不加密)类文件,支持前后*进行模糊匹配
 #includeJar 包含(需要加密)jar包,支持前后*进行模糊匹配
-java -jar jar-project.jar --fromJar "c:\\tool\\a.jar" --excludeClass "*EurekaApplication*" --includeJar "lmc-*"
+#includeConfig 包含(需要加密)文件,如.xml,.properties,.yml等配置文件,支持前后*进行模糊匹配
+java -jar jar-project.jar --fromJar "c:\\tool\\a.jar" --excludeClass "*EurekaApplication*" --includeJar "lmc-*" --includeConfig "*.properties"
 ``` 
 ### 加密配置
 文件名: jar-project.security.properties
@@ -84,7 +85,6 @@ myDecryptCode=
 ```
 
 ### 未来扩展
-1. 增加配置文件等资源加密
-2. 增加远程授权管理端
+1. 增加远程授权管理端
 
 ##### by [车江毅](https://gitee.com/chejiangyi)

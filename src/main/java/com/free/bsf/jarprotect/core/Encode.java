@@ -11,23 +11,27 @@ import com.free.bsf.jarprotect.tool.Agent;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
+import javassist.CtNewMethod;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.jar.Manifest;
 
 public class Encode {
-    public static void run(String from, String to, String excludeClassCondition, String includeJarCondition) {
+    public static void run(String from, String to, String excludeClassCondition, String includeJarCondition,String includeConfigCondition) {
         String targetDir = CommonUtils.gtJarUnJarPath(from);
-        List<JarFileInfo> files = JarUtils.unJar(from, targetDir, includeJarCondition);
+        List<JarFileInfo> files = JarUtils.unJar(1,from, targetDir, includeJarCondition);
         LogUtils.info("jar释放完毕,开始加密....");
         String manifestPath = new File(targetDir, "META-INF/MANIFEST.MF").getAbsolutePath();
         Manifest manifest = ManifestUtils.read(manifestPath);
         ClassPool pool = Context.Default.Pool;
         CommonUtils.loadClassPath(pool, files);
         for (JarFileInfo file : files) {
-            if (file.getFileName().endsWith(".class")) {
+            String fileNameLower= file.getFileName().toLowerCase();
+            if (fileNameLower.endsWith(".class")) {
                 String fileNameNoExt = FileUtils.getFileNameWithoutSuffix(file.getFileName());
                 if (StringUtils.hitCondition(excludeClassCondition, fileNameNoExt)) {
                     LogUtils.info("跳过类:"+file.getClassName());
@@ -40,6 +44,20 @@ public class Encode {
                 FileUtils.saveStream(EncryptFactory.get().e(data), newFile);
                 clearMethod(pool, file);
                 LogUtils.info("加密类:"+file.getClassName());
+            }else if(file.Level==1&&(fileNameLower.endsWith(".yml")||fileNameLower.endsWith(".properties")||fileNameLower.endsWith(".xml"))){
+                String fileName = FileUtils.getFileName(file.getFileName());
+                if (!StringUtils.hitCondition(includeConfigCondition, fileName)) {
+                    LogUtils.info("跳过配置:"+fileName);
+                    continue;
+                }
+                encodeSpringConfig(targetDir,pool);
+                String newFile = CommonUtils.getClassEncodePath(targetDir, file.getFileName());
+                FileUtils.deleteFile(newFile);
+                FileUtils.createDirectory(newFile);
+                byte[] data = FileUtils.toBytes(new File(file.FilePath));
+                FileUtils.saveStream(EncryptFactory.get().e(data), newFile);
+                FileUtils.writeAllText(file.FilePath,"");
+                LogUtils.info("加密配置:"+file.getFileName());
             }
         }
         LogUtils.info("类加密完毕!");
@@ -59,7 +77,7 @@ public class Encode {
         //把本项目的class文件打包进去
         File thisJarFile = new File(agentJar);
         if (agentJar.endsWith(".jar")) {
-            JarUtils.unJar(thisJarFile.getAbsolutePath(), targetDir, null);
+            JarUtils.unJar(1,thisJarFile.getAbsolutePath(), targetDir, null);
         }
         //开发环境中打包
         else if (agentJar.endsWith("/classes/")) {
@@ -68,7 +86,9 @@ public class Encode {
                 String path = FileUtils.relativePath(thisJarFile.getAbsolutePath(), file.getAbsolutePath());
                 File newFile = new File(targetDir, path);
                 FileUtils.createDirectory(newFile.getAbsolutePath());
-                FileUtils.copy(file.getAbsolutePath(), newFile.getAbsolutePath());
+                if(!file.isDirectory()) {
+                    FileUtils.copy(file.getAbsolutePath(), newFile.getAbsolutePath());
+                }
             });
         }
 
@@ -124,6 +144,32 @@ public class Encode {
             return securityConfig;
         } catch (Exception e) {
             throw new BsfException("生成解密配置文件出错", e);
+        }
+    }
+
+    public static void encodeSpringConfig(String targetDir,ClassPool pool) {
+        try {
+            String className="org.springframework.core.io.ClassPathResource";
+            String method = "getInputStream";
+            String methodOld= method+"2";
+            CtClass ctClass = pool.getOrNull(className);
+            if (ctClass != null) {
+                String newFile = CommonUtils.getClassEncodePath(targetDir, className);
+                if(!new File(newFile).exists()){
+                    if(ctClass.isFrozen()){
+                        ctClass.defrost();
+                    }
+                    CtMethod ctMethod = ctClass.getDeclaredMethod(method);
+                    CtMethod ctMethodNew= CtNewMethod.copy(ctMethod, ctClass, null);
+                    ctMethod.setName(methodOld);
+                    ctMethodNew.setBody("return {path}.decodeSpringConfig(this.path,this.getInputStream2());"
+                            .replace("{path}",Decode.class.getName()));
+                    ctClass.addMethod(ctMethodNew);
+                    FileUtils.saveStream(EncryptFactory.get().e(ctClass.toBytecode()), newFile);
+                }
+            }
+        } catch (Exception e) {
+            throw new BsfException(e);
         }
     }
 }

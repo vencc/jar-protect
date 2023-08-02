@@ -1,6 +1,7 @@
 package com.free.bsf.jarprotect.tool;
 
 
+import com.free.bsf.jarprotect.core.Encode;
 import com.free.bsf.jarprotect.core.base.BsfException;
 import com.free.bsf.jarprotect.core.base.Context;
 
@@ -10,8 +11,7 @@ public class Test {
     public static void main(String[] args) throws IOException {
         Context.Default=new Context(null);
         try {
-           // String a = new String(new MyEncrypt().d( new MyEncrypt().e("aa中国aa".getBytes())));
-           // System.out.println(a);
+            new Encode().run("C:\\tools\\lmc-demo-provider-1.0-SNAPSHOT.jar","C:\\tools\\lmc-demo-provider-1.0-SNAPSHOT-测试.jar","","","*.properties");
         }catch (Exception e){
             throw new BsfException(e);
         }

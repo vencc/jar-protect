@@ -9,9 +9,12 @@ import java.io.File;
 
 public class JarFileInfo {
     public String FilePath;
+    //
     public String JarPath;
+    public int Level;
 
-    public JarFileInfo(String filePath,String jarPath){
+    public JarFileInfo(int level,String filePath,String jarPath){
+        this.Level=level;
         this.FilePath=filePath;
         this.JarPath=jarPath;
     }

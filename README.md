@@ -72,6 +72,7 @@ public class MyEncrypt implements IEncrypt {
 ### 解密命令
 jdk17 需要加--add-opens java.base/java.lang=ALL-UNNAMED
 ``` 
+#【格式】java -javaagent:已加密.jar -jar 已加密.jar
 java -javaagent:encrypt-lmc-demo-provider-1.0-SNAPSHOT.jar -jar encrypt-lmc-demo-provider-1.0-SNAPSHOT.jar
 ``` 
 

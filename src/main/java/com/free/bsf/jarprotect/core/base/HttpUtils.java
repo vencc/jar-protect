@@ -18,20 +18,20 @@ import java.util.zip.GZIPInputStream;
  */
 public class HttpUtils {
     public static class HttpRequest{
-        String URL;
-        String Method="GET";
-        Map<String,String> Header;
-        byte[] Body;
-        int ConnectTimeOut=5000;
-        int ReadTimeout=60000;
-        Boolean KeepAlivePool=true;
+        public String URL;
+        public String Method="GET";
+        public Map<String,String> Header;
+        public byte[] Body;
+        public int ConnectTimeOut=5000;
+        public int ReadTimeout=60000;
+        public Boolean KeepAlivePool=true;
     }
 
     public static class HttpResponse{
-        int Code=-1;
-        String Method;
-        Map<String,String> Header;
-        byte[] Body;
+        public int Code=-1;
+        public String Method;
+        public Map<String,String> Header;
+        public byte[] Body;
 
         public boolean isSuccess(){
             if(Code == 200){

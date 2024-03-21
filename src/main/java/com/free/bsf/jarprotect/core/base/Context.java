@@ -34,9 +34,9 @@ public class Context {
             }
         }
         LogUtils.info("加载配置完毕!");
-        for(Map.Entry<Object,Object> kv:this.property.entrySet()){
-            LogUtils.info("[配置信息]"+StringUtils.print(kv.getKey())+":"+StringUtils.print(kv.getValue()));
-        }
+//        for(Map.Entry<Object,Object> kv:this.property.entrySet()){
+//            LogUtils.info("[配置信息]"+StringUtils.print(kv.getKey())+":"+StringUtils.print(kv.getValue()));
+//        }
     }
 
     public static Context Default;
